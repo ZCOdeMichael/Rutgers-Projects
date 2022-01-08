@@ -1,0 +1,50 @@
+
+Punctuation:
+	Include it as part of the token
+	
+Delimiters:
+	Be sure to include as tokens on their own
+	
+Tokens with same frequency:
+	Indempotent
+	
+Have to use headers/libraries?
+	No.
+
+Have to use Makefiles?
+	Yes.
+	
+C version?
+	ANSI
+	(i.e. basic, nuts and bolts ... make sure you compile with no flags other than -o or -l, do NOT use: fsanitize, Wall, Werror, C99, C89)
+
+
+	
+1. Can we compress a single file and all files in another folder 
+If it is valid: ./fileCompressor -c  1 2 3 Huffmancodebook -> check how many args here, and use the last one as Huffmancodebook
+# of args:
+> No.
+If not valid: ./fileCompressor -c 1 2 3 Huffmancodebook --> 2 -> might be consider as the Huffmancodebook 
+> Yes.
+(There is no multi-file mode other than recursive)
+	
+	
+@125 Command Line Errors?
+Are we to assume that the user inputs (add: cmd.line args to executable) are correct/properly formatted?
+> NO!
+
+	
+@128 ASST1 -Flag
+Is the max (add: correct/legal) amount of flags that you can have at once 2? 	
+> Yes
+	
+	
+Ordering of flags:
+> recursive (if specified) then action (b or c or d)
+
+No flag mixing, all flags must have their own '-':
+> e.g.: -R -b , not -Rb
+	
+	
+
+

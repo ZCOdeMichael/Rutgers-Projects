@@ -1,0 +1,59 @@
+
+Hash:
+	don't have to write own
+	can use openssl
+		(advise looking in to MD5)
+	implied: can load openssl library (-l on command line)
+
+
+destroy:
+	removes from server side, not necessarily from client
+	
+(files/dirs not under source control do not appear in Manifest and are ignored)
+
+	if changes exist on the client side, still do remove from Manifest
+
+	
+archive:
+	represent as you like
+	(no higher up than server's current working directory, though)
+
+
+multi-commit maintenance and expiry?
+	...?
+
+.Manfiest:
+	starts from CWD that client is called in, which is parent directory of all projects on client side:
+		./
+			proj0/
+			proj1/
+			proj2/
+	
+
+names in commands:
+	./WTF add proj0 file1
+	
+	./WTF add proj0 sub0/subsub92/file716
+
+
+Compression:
+		use libs to do it for realsies!
+	
+
+
+.Manifest:
+3
+1 ./proj0/file0 1o)!)@(#!O pk1j1c091
+2 ./proj0/file1 1o)!)@(#!OPpk1j1c091
+1 ./proj0/file2 1o)!)@(#!OPpk1j1c091
+3 ./proj0/file3 1o)!)@(#!OPpk1j1c091
+
+	
+
+	
+	
+
+
+
+	
+	

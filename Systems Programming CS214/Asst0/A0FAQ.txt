@@ -1,0 +1,19 @@
+FAQ:
+
+File contents/character:
+	case?:	lowercase only
+	non-letter ASCII?: no
+	degenerate dashes (in nums)?: no
+	EOF as delimiter?:  yes (except for empty tokens) 
+	empty tokens?:  yes (except for last token)
+
+	string.h?
+		'isnumber'
+		'isalpha'
+		'isawhitespacechar..'
+		but! no compare/sort!
+
+	atoi() will do string to int conversion
+
+
+

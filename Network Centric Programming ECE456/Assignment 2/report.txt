@@ -1,0 +1,12 @@
+The functionality of my program:
+I implemented a simple proxy that takes HTTP GET requests from a browser and logs the request in a proxy.log file. The proxy then will connect to the webserver that it needs to query from and sends the appropriate parsed GET request. The proxy will completely read in the webserver response dynamically using a link list (since the size of the response might vary). Then it will store the read size to the proxy.log file and send the response to the browser that is making the request.
+
+A slight caveat for my program:
+The browser request must be less than or equal to REQUEST_BUFFER_SIZE - 1. (though this might not be an issue since there isn't a requirement to deal with differing sized browser requests, but there is a requirement to deal with differing sized HTTP responses which the proxy is able by using link lists)
+
+A small additional feature:
+When the user sends a SIGINT signal to the program when it is running (when the user enters ^C), the proxy will close the file descriptor to the proxy.log file and the two connected sockets (one socket for the requesting browser and one socket for the client that's making requests to the webserver).
+
+I have tested the proxy on sites such as:
+https://example.com - proxy works flawlessly since it only does GET requests
+http://www.yahoo.com/news.html - proxy will work until the browser starts sending POST requests than it will try to send a GET request to the webserver which does not yield anything and the program will be stuck until the user enters ^C (I had to clear the cookies/cache in my web browser in order to get a GET request to show up in my proxy.log file if I have already been to the website)
