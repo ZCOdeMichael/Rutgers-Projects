@@ -1,0 +1,119 @@
+Bars(name, license, city, phone, addr)
+Beers(name, manf)
+Drinkers(name, city, phone, addr)
+Sells( bar, beer, price)
+Likes(drinker, beer)
+Frequents(drinker, bar)
+
+
+Query 1:
+SELECT beer 
+FROM Sells
+WHERE bar = 'Gecko Grill' 
+AND beer <> 'Hefeweizen'
+
+beer:
+Budweiser
+
+Query 2:
+[Excluding Justin]
+SELECT DISTINCT drinker 
+FROM Likes
+WHERE beer IN (SELECT beer FROM Likes where drinker = 'Justin') 
+AND drinker <> 'Justin'
+
+drinker:
+John
+Mike
+
+[Including Justin]
+SELECT DISTINCT drinker 
+FROM Likes
+WHERE beer IN (SELECT beer FROM Likes where drinker = 'Justin')
+
+drinker:
+John
+Mike
+Justin
+
+Query 3:
+SELECT DISTINCT f.drinker, f.bar 
+FROM Frequents f, Likes l, Sells s
+WHERE f.drinker = l.drinker 
+AND l.beer = s.beer 
+AND s.bar = f.bar
+
+dinker; bar:
+Mike - A.P. Stump's
+Jesse - Blue Angel
+Mike - Blue Angel
+John - Cabana
+Mike - Cabana
+John - Caravan
+Justin - Geck Grill
+Mike - The Shark and Rose
+Justin - Caravan
+Justin - Seven Bamboo
+
+Query 4:
+SELECT T.bar 
+FROM ((SELECT bar FROM Frequents WHERE drinker = 'Justin')
+UNION (SELECT bar FROM Frequents WHERE drinker = 'Rebecca')) as T
+WHERE T.bar NOT IN 
+(SELECT b1.bar FROM Frequents b1, Frequents b2 WHERE b1.bar = b2.bar AND b1.drinker = 'Justin' AND b2.drinker = 'Rebecca')
+
+bar:
+Caravan
+Seven Bamboo
+Coconut Willie's Cocktail Lounge
+
+Query 5:
+SELECT DISTINCT f.bar 
+FROM Frequents f, Sells s, Likes l
+WHERE f.bar = s.bar 
+AND f.drinker = l.drinker 
+AND s.beer = l.beer
+
+bar:
+Mike
+Jesse
+John
+Justin
+
+Query 6:
+SELECT s.bar 
+FROM Sells s, Likes l
+WHERE s.beer = l.beer 
+AND (l.drinker = 'John' OR l.drinker = 'Rebecca') 
+AND s.price < 5
+
+bar:
+Club 175
+Coconut Willie's Cocktail Lounge
+Gecko Grill
+Giza Hookah Lounge
+Seven Bamboo
+The Backbeat
+The Shark and Rose
+
+Query 7:
+SELECT l1.drinker
+FROM Likes l1, Likes l2
+WHERE l1.drinker = l2.drinker
+AND l1.beer = 'Hefeweizen'
+AND l2.beer = 'Killian''s'
+
+drinker:
+Mike
+
+Query 8:
+SELECT name
+FROM Bars
+WHERE name LIKE '%The%'
+
+name:
+The B-Hive
+The Backbeat
+The Blank Club
+The Shark and Rose
+

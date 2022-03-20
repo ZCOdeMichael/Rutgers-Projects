@@ -1,0 +1,234 @@
+
+
+Quary #1:
+SELECT b.name 
+FROM Beers b
+WHERE b.name
+NOT IN (SELECT s.beer FROM Sells s WHERE s.bar = 'Gecko Grill')
+
+name:
+Blue Moon
+Bud
+Creamy Dark
+Extra Gold
+Hefeweizen Doppelbock
+ICEHOUSE
+Killian's
+Michelob Amber Bock
+Michelob Golden Draft
+Michelob Golden Draft Light
+Michelob ULTRA
+Original Premium
+Original Premium Lager
+Original Premium Lager Dog
+Sauza Diablo
+Southpaw Light
+Stolichnaya Citrona
+Zima
+Zima Citrus
+
+Quary #2:
+SELECT drinker
+FROM Likes
+WHERE beer in (SELECT distinct beer FROM Likes WHERE drinker = 'Justin') and drinker <> 'Justin'
+group by drinker
+having count(*) = (SELECT distinct count(*) FROM Likes WHERE drinker = 'Justin' group by drinker)
+
+drinker:
+John
+Mike
+
+Quary #3:
+SELECT DISTINCT f.drinker, f.bar
+FROM Frequents f
+WHERE 0 = (SELECT count(*) FROM Likes l, Sells s WHERE f.drinker = l.drinker AND f.bar = s.bar AND l.beer = s.beer)
+
+drinker,	bar:
+Bob,		Blue Angel
+Erik,		Blue Angel
+Herb,		Blue Angel
+Joe,		Blue Angel
+John,		Blue Angel
+Justin,		Blue Angel
+Rebecca,	Blue Angel
+Tom,		Blue Angel
+Vince,		Blue Angel
+Vince,		Cabana
+Joe,		Caravan
+Tom,		Caravan
+Bob,		Coconut Willie's Cocktail Lounge
+Joe,		Coconut Willie's Cocktail Lounge
+Rebecca,	Coconut Willie's Cocktail Lounge
+Rebecca,	Gecko Grill
+Herb,		Seven Bamboo
+Vince,		Seven Bamboo
+Bob,		The Blank Club
+Vince,		Club 175
+Joe,		Britannia Arms
+Tom,		Giza Hookah Lounge
+
+Quary #4:
+SELECT name
+FROM Bars
+WHERE name 
+NOT IN (SELECT drinker FROM Frequents WHERE drinker = 'Justin' OR drinker = 'Rebecca')
+
+name:
+A.P. Stump's
+Blue Angel
+Blue Tattoo
+Britannia Arms
+Cabana
+Caravan
+Club 175
+Coconut Willie's Cocktail Lounge
+Eulipia
+Gecko Grill
+Giza Hookah Lounge
+Hedley Club
+Il Fornaio
+Seven Bamboo
+The B-Hive
+The Backbeat
+The Blank Club
+The Shark and Rose
+
+Quary #5:
+SELECT f1.drinker
+FROM Frequents f1
+WHERE (SELECT count(*) FROM Frequents f2 WHERE f1.drinker = f2.drinker) = 
+(SELECT count(*) FROM Sells s 
+WHERE s.beer in (SELECT l.beer FROM Likes l WHERE l.drinker = f1.drinker)
+AND s.bar in (SELECT f3.bar FROM Frequents f3 WHERE f3.drinker = f1.drinker)) 
+
+drinker:
+Jesse
+
+Quary #6:
+SELECT b.name
+FROM Bars b
+WHERE NOT EXISTS (SELECT s1.bar FROM Sells s1 WHERE b.name = s1.bar AND 
+5 > ALL (SELECT p.price FROM Sells p WHERE s1.bar = p.bar AND s1.price = p.price))
+
+bar:
+A.P. Stump's
+Blue Angel
+Blue Tattoo
+Britannia Arms
+Cabana
+Hedley Club
+Il Fornaio
+The B-Hive
+The Blank Club
+
+Quary #7:
+SELECT bar FROM (SELECT bar, AVG(price) average FROM Sells GROUP BY bar) AS t1
+WHERE 0 = (SELECT count(*) FROM (SELECT bar, AVG(price) average FROM Sells GROUP BY bar) AS t2 WHERE t1.average < t2.average)
+
+bar:
+Hedley Club
+
+Quary #8:
+SELECT bar FROM (SELECT bar, AVG(price) average FROM Sells GROUP BY bar) as t
+ORDER BY average desc
+
+bar:
+Hedley Club
+Britannia Arms
+A.P. Stump's
+Blue Tattoo
+Blue Angel
+The Blank Club
+The B-Hive
+The Shark and Rose
+Cabana
+Giza Hookah Lounge
+Caravan
+Club 175
+Eulipia
+Gecko Grill
+The Backbeat
+Coconut Willie's Cocktail Lounge
+Seven Bamboo
+
+Quary #9:
+SELECT name FROM Bars WHERE name LIKE '% %'
+
+name:
+A.P. Stump's
+Blue Angel
+Blue Tattoo
+Britannia Arms
+Club 175
+Coconut Willie's Cocktail Lounge
+Gecko Grill
+Giza Hookah Lounge
+Hedley Club
+Il Fornaio
+Seven Bamboo
+The B-Hive
+The Backbeat
+The Blank Club
+The Shark and Rose
+
+Quary #10:
+SELECT l1.drinker 
+FROM (SELECT drinker, count(*) bc1 FROM Likes GROUP BY drinker) as l1
+WHERE 0 = (SELECT count(*) FROM (SELECT count(*) bc2 FROM Likes GROUP BY drinker) as l2 WHERE l1.bc1 < l2.bc2)
+
+drinker:
+Mike
+
+Quary #10:
+SELECT l1.beer 
+FROM (SELECT beer, AVG(price) bc1 FROM Sells GROUP BY beer) as l1
+WHERE 0 = (SELECT count(*) FROM (SELECT AVG(price) bc2 FROM Sells GROUP BY beer) as l2 WHERE l1.bc1 < l2.bc2)
+
+beer:
+Hefeweizen
+
+Quary #12:
+SELECT bar
+FROM (SELECT bar, price FROM Sells WHERE beer = 'Budweiser') as l1
+WHERE 0 = (SELECT count(*) FROM (SELECT price FROM Sells WHERE beer = 'Budweiser') as l2 WHERE l1.price > l2.price)
+
+bar:
+Seven Bamboo
+
+Quary #13:
+SELECT DISTINCT f.drinker
+FROM Frequents f 
+LEFT JOIN (Select f1.drinker, s.bar FROM Sells s, Frequents f1 WHERE s.beer = 'Budweiser' AND f1.bar = s.bar) s1 ON f.drinker = s1.drinker
+WHERE s1.drinker IS NULL
+
+drinker:
+Erik
+Jesse
+
+Quary #14:
+SELECT DISTINCT s.beer
+FROM Sells s
+LEFT JOIN (Select s1.beer FROM Sells s1, Frequents f WHERE f.drinker = 'Mike' AND s1.bar = f.bar) a ON s.beer = a.beer
+WHERE a.beer IS NULL
+
+beer:
+Killian's
+Stolichnaya Citrona
+Michelob Amber Bock
+
+Quary #15:
+SELECT IF(COUNT(*) > 0, "YES", "NO")
+FROM Beers b
+WHERE (SELECT COUNT(*) FROM Drinkers) = 
+(SELECT COUNT(*) FROM Likes l, Drinkers d WHERE d.name = l.drinker AND b.name = l.beer)
+
+IF(COUNT(*) > 0, "YES", "NO"):
+NO
+
+Quary #16:
+select distinct name as beer from Beers where Beers.name in (SELECT b.name from Beers b WHERE (SELECT COUNT(*) FROM Drinkers) = (SELECT COUNT(*) FROM Likes l, Drinkers d WHERE d.name = l.drinker AND b.name = l.beer))
+UNION 
+select 'No such beer exists' as beer from Beers where NOT EXISTS (SELECT b.name from Beers b WHERE (SELECT COUNT(*) FROM Drinkers) = (SELECT COUNT(*) FROM Likes l, Drinkers d WHERE d.name = l.drinker AND b.name = l.beer))
+
+beer:
+No such beer exists
