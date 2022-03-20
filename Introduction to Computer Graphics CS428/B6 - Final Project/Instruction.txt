@@ -1,0 +1,17 @@
+For this final project assignment, you need to build on top of one or more of the previous assignments to create something NOVEL. Your project can be
+a. Research-oriented: 
+You can develop new algorithms or visualize an algorithm with Unity.
+or
+b. Programming-oriented:
+You can create a fun game based on Character Animation/Navigation/Behavior Trees. 
+
+Here's a list of previous projects:
+https://docs.google.com/document/d/1Tyuk-6jYWgkZ_PyDp5pHYu-S6J9i-DTdka1zhIUjTT8/edit?usp=sharing
+
+
+Your final project submission must include the following: 
+–A 2-4 video minute video demonstration
+–A report describing the system, with evaluation (e.g., quantitative evaluation).
+–Web deployed application or Win64 build with instructions of how to interact with the system
+–Zip file of entire Unity project (only Assets/ and ProjectSettings/)
+ 
